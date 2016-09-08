@@ -1,7 +1,7 @@
 megs: 32
 romimage: file="/usr/share/bochs/BIOS-bochs-latest"
 vgaromimage: file ="/usr/share/bochs/VGABIOS-lgpl-latest"
-floppya: 1_44=blue.bin, status=inserted
+floppya: 1_44=os-image, status=inserted
 display_library: sdl
 boot: a
 floppy_bootsig_check: disabled=1
