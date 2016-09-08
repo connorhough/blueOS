@@ -29,7 +29,7 @@ KERNEL_OFFSET equ 0x1000    ; memory offset to which we will load the kernel
 
 ; load kernel
 load_kernel:
-    mov bx, MS_LOAD_KERNEL  ; print a message to say we are loading kernel
+    mov bx, MSG_LOAD_KERNEL  ; print a message to say we are loading kernel
     call print_string
     
     mov bx, KERNEL_OFFSET   ; set up parameters for our disk_load routine
@@ -41,4 +41,28 @@ load_kernel:
 
 [bits 32]
 ; this is where we switch to after switching to and initializing protected mode
+BEGIN_PM:
+    
+    mov ebx, MSG_PROT_MODE  ; use 32-bit print routine to announce we are in 32-bit PM
+    call print_string_pm
+
+    call KERNEL_OFFSET      ; jumps to location of kernel code
+
+    jmp $
+
+; Global Vars
+BOOT_DRIVE        db 0
+MSG_REAL_MODE    db "Started  in 16-bit  Real  Mode", 0
+MSG_PROT_MODE    db "Successfully  landed  in 32-bit  Protected  Mode", 0
+MSG_LOAD_KERNEL  db "Loading  kernel  into  memory.", 0
+
+; Bootsector padding
+times 510-($-$$) db 0
+dw 0xaa55
+
+
+    
+
+
+
 
