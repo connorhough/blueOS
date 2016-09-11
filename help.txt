@@ -1,0 +1,34 @@
+
+-- compile assembly code
+nasm boot_sect.asm -f bin -o boot_sect.bin
+
+-- launch bochs from bochsrc.txt
+bochs -f bochsrc.txt
+
+-- print contents of .bin file
+od -t x1 -A n filename.bin
+
+-- push committed files to github
+git push origin master
+
+-- compiling the C files
+gcc -ffreestanding -c basic.c -o basic.o
+
+-- Link c file to binary ( converts annotated machine code file .o to raw machine code .bin)
+ld -o newfile.bin -Ttext 0x0 --oformat binary oldfile.o
+
+-- concatinating c machine code and boot sector code
+cat boot_sect.bin kernel.bin > os-image
+
+-- objdump
+objdump -d filename.extension
+
+-- disassemble raw machine code
+ndisasm -b 32 filename.bin
+
+-- compile assembly into object file
+nasm kernel_entry.asm -f elf -o kernel_entry.o
+
+-- link kernel_entry and kernel
+ld -o kernel.bin -Ttext 0x1000 kernel_entry.o kernel.o --oformat binary
+
